@@ -1,11 +1,333 @@
 {
-  "generated_at": "2026-07-04T23:26:59+08:00",
+  "generated_at": "2026-07-05T02:43:45+08:00",
   "groups": [
     {
       "group": "market",
       "benchmark": "twii",
       "members": 1942,
       "rows": 109
+    },
+    {
+      "group": "semiconductor",
+      "benchmark": "semiconductor",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "risk_control",
+      "benchmark": "risk_control",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "sentiment",
+      "benchmark": "sentiment",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "效順暢益生菌",
+      "benchmark": "效順暢益生菌",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "維持健康",
+      "benchmark": "維持健康",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "優惠",
+      "benchmark": "優惠",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "股癌傳送門",
+      "benchmark": "股癌傳送門",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "我會怕兒子",
+      "benchmark": "我會怕兒子",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "現在只要下載",
+      "benchmark": "現在只要下載",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "薑黃",
+      "benchmark": "薑黃",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "搶先開跑",
+      "benchmark": "搶先開跑",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "黃金",
+      "benchmark": "黃金",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "緊緻霜",
+      "benchmark": "緊緻霜",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "折起",
+      "benchmark": "折起",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "涼感忘憂枕",
+      "benchmark": "涼感忘憂枕",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "不給休息",
+      "benchmark": "不給休息",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "當你有幸成為",
+      "benchmark": "當你有幸成為",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "電暖器系列下",
+      "benchmark": "電暖器系列下",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "一組就是可以",
+      "benchmark": "一組就是可以",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "輸入優惠碼",
+      "benchmark": "輸入優惠碼",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "直接二刷",
+      "benchmark": "直接二刷",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "限量",
+      "benchmark": "限量",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "旅行",
+      "benchmark": "旅行",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "謹藉本節目",
+      "benchmark": "謹藉本節目",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "日事件中的英",
+      "benchmark": "日事件中的英",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "易牙居",
+      "benchmark": "易牙居",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "上海鄉村",
+      "benchmark": "上海鄉村",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "黃景龍",
+      "benchmark": "黃景龍",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "taiwan_market",
+      "benchmark": "taiwan_market",
+      "members": 30,
+      "rows": 0,
+      "status": "no_price_rows"
+    },
+    {
+      "group": "桂格天地合補",
+      "benchmark": "桂格天地合補",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "馬爸換角度凱",
+      "benchmark": "馬爸換角度凱",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "雙專利益生菌",
+      "benchmark": "雙專利益生菌",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "特濕拉",
+      "benchmark": "特濕拉",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "應該會發作",
+      "benchmark": "應該會發作",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "本集節目由",
+      "benchmark": "本集節目由",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "善存葉黃素",
+      "benchmark": "善存葉黃素",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "天後",
+      "benchmark": "天後",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "贊助",
+      "benchmark": "贊助",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "美股多蛙終於",
+      "benchmark": "美股多蛙終於",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "開始回血",
+      "benchmark": "開始回血",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "仔永支",
+      "benchmark": "仔永支",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "再往下",
+      "benchmark": "再往下",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "珍珠薏仁紅豆",
+      "benchmark": "珍珠薏仁紅豆",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "東璧堂",
+      "benchmark": "東璧堂",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "賈偷島",
+      "benchmark": "賈偷島",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
+    },
+    {
+      "group": "聽眾專屬優惠",
+      "benchmark": "聽眾專屬優惠",
+      "members": 0,
+      "rows": 0,
+      "status": "too_few_members"
     }
   ]
 }

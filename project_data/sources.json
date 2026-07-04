@@ -20,16 +20,15 @@
       "name": "podcast_rss",
       "label": "Podcast RSS / 節目頁",
       "type": "podcast",
-      "enabled": false,
-      "capture_mode": "auto_discovery",
-      "discovery_mode": "rss_and_seed",
-      "search_queries": [
-        "股癌 podcast",
-        "股癌 RSS"
-      ],
+      "enabled": true,
+      "capture_mode": "rss",
+      "discovery_mode": "rss",
+      "rss_url": "https://feeds.soundon.fm/podcasts/954689a5-3096-43a4-a80b-7810b219cef3.xml",
+      "max_items": 80,
+      "search_queries": [],
       "seed_urls": [],
       "url_hint": "RSS feed、單集頁面、節目首頁",
-      "description": "自動從 RSS 或 seed 頁面發現單集連結，再抓節目標題、概要與上架時間。"
+      "description": "從 Gooaye 股癌 SoundOn RSS 抓單集標題、摘要、上架時間與連結。"
     },
     {
       "name": "news_interview",

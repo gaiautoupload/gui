@@ -5,6 +5,8 @@ import json
 import re
 import hashlib
 import urllib.request
+import xml.etree.ElementTree as ET
+from email.utils import parsedate_to_datetime
 from urllib.parse import quote_plus
 from collections import Counter, defaultdict
 from dataclasses import dataclass
@@ -225,6 +227,49 @@ def strip_html(text: str) -> str:
     return text.strip()
 
 
+def child_text(node: ET.Element, tag: str) -> str:
+    found = node.find(tag)
+    return normalize_text(strip_html(found.text or "")) if found is not None else ""
+
+
+def parse_rss_date(value: str) -> str:
+    try:
+        return parsedate_to_datetime(value).astimezone().isoformat(timespec="seconds")
+    except Exception:
+        return value
+
+
+def collect_from_rss(source: dict) -> list[RawMention]:
+    rss_url = source.get("rss_url") or source.get("url")
+    if not rss_url:
+        return []
+    xml_text = fetch_url(rss_url)
+    root = ET.fromstring(xml_text)
+    source_name = str(source.get("name", "rss"))
+    author = str(source.get("author", "股癌"))
+    max_items = int(source.get("max_items", 80))
+    items: list[RawMention] = []
+    for idx, item in enumerate(root.findall(".//channel/item")[:max_items], start=1):
+        title = child_text(item, "title")
+        description = child_text(item, "description")
+        link = child_text(item, "link") or rss_url
+        pub_date = parse_rss_date(child_text(item, "pubDate"))
+        guid = child_text(item, "guid") or f"{source_name}-{idx:03d}"
+        content = normalize_text(" ".join(part for part in [title, description] if part))
+        items.append(
+            RawMention(
+                source_id=f"{source_name}-{hashlib.sha1(guid.encode('utf-8')).hexdigest()[:10]}",
+                source_type="podcast",
+                source_url=link,
+                published_at=pub_date,
+                author=author,
+                title=title,
+                content=content,
+            )
+        )
+    return items
+
+
 def extract_meta(html: str, name: str) -> str:
     patterns = [
         rf'<meta[^>]+property=["\']{re.escape(name)}["\'][^>]+content=["\'](.*?)["\']',
@@ -417,6 +462,8 @@ def design_dynamic_benchmarks(
 
 
 def collect_from_source(source: dict) -> list[RawMention]:
+    if source.get("capture_mode") == "rss" or source.get("type") == "podcast" and source.get("rss_url"):
+        return collect_from_rss(source)
     urls = source.get("urls", []) or ([source["url"]] if source.get("url") else [])
     if not urls:
         urls = discover_urls(source)

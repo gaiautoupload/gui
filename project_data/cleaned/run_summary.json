@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-07-04T23:27:01+08:00",
-  "mention_count": 0,
-  "theme_count": 0,
-  "weekly_count": 0,
-  "accuracy_samples": 0,
-  "accuracy_rate": null
+  "generated_at": "2026-07-05T02:43:47+08:00",
+  "mention_count": 80,
+  "theme_count": 5,
+  "weekly_count": 40,
+  "accuracy_samples": 12,
+  "accuracy_rate": 0.0
 }
