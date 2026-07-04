@@ -1,0 +1,15 @@
+{
+  "input_dir": "project_data/raw",
+  "clean_dir": "project_data/cleaned",
+  "notes_dir": "project_data/notes",
+  "output_dir": "output",
+  "reports_dir": "output/reports",
+  "sources_file": "project_data/sources.json",
+  "keywords_file": "project_data/keywords.json",
+  "daily_report_file": "output/daily_report.md",
+  "weekly_report_file": "output/weekly_report.md",
+  "benchmark_dir": "project_data/benchmarks",
+  "benchmark_source_company_master": "../topic_06_self_assessed_eps_catalyst/project_data/full_market_base/full_market_base.csv",
+  "benchmark_source_price_dir": "../topic_06_self_assessed_eps_catalyst/project_data/full_market_prices/prices",
+  "benchmark_design_file": "project_data/benchmark_design.json"
+}

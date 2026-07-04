@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.DS_Store
+
+project_data/raw/*.jsonl
+project_data/benchmark_sources/*.csv
+

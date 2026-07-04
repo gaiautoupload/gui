@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-07-04T23:26:59+08:00",
+  "groups": [
+    {
+      "group": "market",
+      "benchmark": "twii",
+      "members": 1942,
+      "rows": 109
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "sources": [
+    {
+      "name": "youtube_channel",
+      "label": "YouTube 頻道 / 影片",
+      "type": "youtube",
+      "enabled": false,
+      "capture_mode": "auto_discovery",
+      "discovery_mode": "search_and_seed",
+      "search_queries": [
+        "股癌 YouTube",
+        "股癌 逐字稿",
+        "股癌 影片"
+      ],
+      "seed_urls": [],
+      "url_hint": "影片頁、頻道頁、逐字稿頁",
+      "description": "自動從搜尋詞與 seed 頁面發現候選影片連結，再抓標題、描述、字幕或逐字稿。"
+    },
+    {
+      "name": "podcast_rss",
+      "label": "Podcast RSS / 節目頁",
+      "type": "podcast",
+      "enabled": false,
+      "capture_mode": "auto_discovery",
+      "discovery_mode": "rss_and_seed",
+      "search_queries": [
+        "股癌 podcast",
+        "股癌 RSS"
+      ],
+      "seed_urls": [],
+      "url_hint": "RSS feed、單集頁面、節目首頁",
+      "description": "自動從 RSS 或 seed 頁面發現單集連結，再抓節目標題、概要與上架時間。"
+    },
+    {
+      "name": "news_interview",
+      "label": "專訪 / 新聞 / 文章",
+      "type": "article",
+      "enabled": false,
+      "capture_mode": "auto_discovery",
+      "discovery_mode": "search_and_seed",
+      "search_queries": [
+        "股癌 專訪",
+        "股癌 新聞",
+        "股癌 文章"
+      ],
+      "seed_urls": [],
+      "url_hint": "媒體文章、專訪頁、人物專欄",
+      "description": "自動從搜尋詞與 seed 頁面整理可分析文章，再抓完整內文。"
+    },
+    {
+      "name": "social_post",
+      "label": "社群貼文",
+      "type": "social",
+      "enabled": false,
+      "capture_mode": "auto_discovery",
+      "discovery_mode": "seed_and_mention_scan",
+      "search_queries": [
+        "股癌 貼文",
+        "股癌 社群"
+      ],
+      "seed_urls": [],
+      "url_hint": "公開貼文連結",
+      "description": "自動從 seed 頁面或公開提及頁面掃描貼文連結，再抓短句與回覆脈絡。"
+    }
+  ]
+}

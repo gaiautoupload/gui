@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="股癌分析專區，依日期查看每日論點整理與更新紀錄。" />
+  <title>股癌分析專區</title>
+  <link rel="stylesheet" href="./assets/site.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Topic 22 / Stockguy Analysis</p>
+        <h1>股癌分析專區</h1>
+        <p class="lead">每日自動抓取、整理與歸納公開言論，按日期切換報告，保留來源可追溯。</p>
+      </div>
+      <div class="hero-metrics">
+        <div class="metric">
+          <span class="metric-label">最後更新</span>
+          <strong id="generatedAt">-</strong>
+        </div>
+        <div class="metric">
+          <span class="metric-label">論點數</span>
+          <strong id="argumentCount">-</strong>
+        </div>
+        <div class="metric">
+          <span class="metric-label">主題數</span>
+          <strong id="themeCount">-</strong>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel controls">
+        <div class="control-row">
+          <label for="reportDate">選擇日期</label>
+          <select id="reportDate"></select>
+        </div>
+        <div class="control-row">
+          <label for="searchBox">搜尋論點</label>
+          <input id="searchBox" type="search" placeholder="輸入關鍵字，例如 AI、風控、半導體" />
+        </div>
+      </section>
+
+      <section class="panel summary">
+        <div class="section-head">
+          <h2>日期報告</h2>
+          <span id="reportMeta" class="meta-pill"></span>
+        </div>
+        <article id="dailySummary" class="summary-card"></article>
+      </section>
+
+      <section class="panel">
+        <div class="section-head">
+          <h2>論點卡片</h2>
+          <span class="meta-pill">可點來源追回原文</span>
+        </div>
+        <div id="reportList" class="cards"></div>
+      </section>
+    </main>
+  </div>
+  <script src="./assets/site.js"></script>
+</body>
+</html>
