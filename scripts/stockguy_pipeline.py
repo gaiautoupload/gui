@@ -258,42 +258,87 @@ def child_text(node: ET.Element, tag: str) -> str:
     return normalize_text(strip_html(found.text or "")) if found is not None else ""
 
 
-def parse_rss_date(value: str) -> str:
+def parse_feed_date(value: str) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return ""
     try:
-        return parsedate_to_datetime(value).astimezone().isoformat(timespec="seconds")
+        return parsedate_to_datetime(text).astimezone().isoformat(timespec="seconds")
     except Exception:
-        return value
+        pass
+    try:
+        return datetime.fromisoformat(text.replace("Z", "+00:00")).astimezone().isoformat(timespec="seconds")
+    except Exception:
+        return text
 
 
-def parse_rss_items(source: dict) -> list[dict]:
-    rss_url = source.get("rss_url") or source.get("url")
-    if not rss_url:
-        return []
-    xml_text = fetch_url(rss_url)
-    root = ET.fromstring(xml_text)
+def parse_rss_items(root: ET.Element, source: dict, feed_url: str) -> list[dict]:
     source_name = str(source.get("name", "rss"))
     max_items = int(source.get("max_items", 80))
     items = []
     for idx, item in enumerate(root.findall(".//channel/item")[:max_items], start=1):
         title = child_text(item, "title")
         description = child_text(item, "description")
-        link = child_text(item, "link") or rss_url
-        pub_date = parse_rss_date(child_text(item, "pubDate"))
-        guid = child_text(item, "guid") or f"{source_name}-{idx:03d}"
+        link = child_text(item, "link") or feed_url
+        pub_date = parse_feed_date(child_text(item, "pubDate"))
+        guid = child_text(item, "guid") or link or f"{source_name}-{idx:03d}"
         episode_id = f"{source_name}-{hashlib.sha1(guid.encode('utf-8')).hexdigest()[:10]}"
         items.append({"episode_id": episode_id, "published_at": pub_date, "title": title, "url": link, "summary_preview": description[:180]})
     return items
 
 
-def monitor_rss_source(source: dict, monitor_dir: Path) -> list[dict]:
+def parse_atom_items(root: ET.Element, source: dict, feed_url: str) -> list[dict]:
+    ns = {
+        "atom": "http://www.w3.org/2005/Atom",
+        "media": "http://search.yahoo.com/mrss/",
+        "yt": "http://www.youtube.com/xml/schemas/2015",
+    }
+    source_name = str(source.get("name", "atom"))
+    max_items = int(source.get("max_items", 80))
+    items = []
+    for idx, entry in enumerate(root.findall("atom:entry", ns)[:max_items], start=1):
+        title_node = entry.find("atom:title", ns)
+        title = normalize_text(strip_html(title_node.text or "")) if title_node is not None else ""
+        link = feed_url
+        link_node = entry.find("atom:link", ns)
+        if link_node is not None:
+            link = link_node.attrib.get("href") or link
+        published_node = entry.find("atom:published", ns)
+        if published_node is None:
+            published_node = entry.find("atom:updated", ns)
+        published_at = parse_feed_date(published_node.text if published_node is not None else "")
+        video_node = entry.find("yt:videoId", ns)
+        video_id = normalize_text(video_node.text or "") if video_node is not None else ""
+        media_description = entry.find("media:group/media:description", ns)
+        description = normalize_text(strip_html(media_description.text or "")) if media_description is not None else ""
+        guid = video_id or link or f"{source_name}-{idx:03d}"
+        episode_id = f"{source_name}-{hashlib.sha1(guid.encode('utf-8')).hexdigest()[:10]}"
+        items.append({"episode_id": episode_id, "published_at": published_at, "title": title, "url": link, "summary_preview": description[:180]})
+    return items
+
+
+def parse_feed_items(source: dict) -> list[dict]:
+    feed_url = source.get("rss_url") or source.get("feed_url") or source.get("url")
+    if not feed_url:
+        return []
+    xml_text = fetch_url(feed_url)
+    root = ET.fromstring(xml_text)
+    if root.findall(".//channel/item"):
+        items = parse_rss_items(root, source, feed_url)
+    else:
+        items = parse_atom_items(root, source, feed_url)
+    return sorted(items, key=lambda item: parse_date(item.get("published_at", "")) or datetime.min, reverse=True)
+
+
+def monitor_feed_source(source: dict, monitor_dir: Path) -> list[dict]:
     monitor_dir.mkdir(parents=True, exist_ok=True)
-    items = parse_rss_items(source)
-    out_path = monitor_dir / f"{source.get('name', 'rss')}_episodes.csv"
+    items = parse_feed_items(source)
+    out_path = monitor_dir / f"{source.get('name', 'feed')}_episodes.csv"
     with out_path.open("w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=["episode_id", "published_at", "title", "url", "summary_preview"])
         writer.writeheader()
         writer.writerows(items)
-    save_json(monitor_dir / f"{source.get('name', 'rss')}_episodes.json", items)
+    save_json(monitor_dir / f"{source.get('name', 'feed')}_episodes.json", items)
     return items
 
 
@@ -1286,8 +1331,8 @@ def main() -> int:
     for source in sources:
         if not source.get("enabled", False):
             continue
-        if source.get("capture_mode") == "rss" or source.get("type") == "podcast" and source.get("rss_url"):
-            monitor_rss_source(source, episode_monitor_dir)
+        if source.get("capture_mode") in {"rss", "atom", "feed", "youtube_rss"} or source.get("rss_url"):
+            monitor_feed_source(source, episode_monitor_dir)
             continue
         collected = collect_from_source(source)
         if collected:

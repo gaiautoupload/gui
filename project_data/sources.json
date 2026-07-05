@@ -4,17 +4,23 @@
       "name": "youtube_channel",
       "label": "YouTube 頻道 / 影片",
       "type": "youtube",
-      "enabled": false,
-      "capture_mode": "auto_discovery",
-      "discovery_mode": "search_and_seed",
+      "enabled": true,
+      "capture_mode": "youtube_rss",
+      "discovery_mode": "channel_feed",
+      "channel_id": "UC23rnlQU_qE3cec9x709peA",
+      "channel_url": "https://www.youtube.com/@gooaye",
+      "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC23rnlQU_qE3cec9x709peA",
+      "max_items": 50,
       "search_queries": [
         "股癌 YouTube",
         "股癌 逐字稿",
         "股癌 影片"
       ],
-      "seed_urls": [],
-      "url_hint": "影片頁、頻道頁、逐字稿頁",
-      "description": "自動從搜尋詞與 seed 頁面發現候選影片連結，再抓標題、描述、字幕或逐字稿。"
+      "seed_urls": [
+        "https://www.youtube.com/@gooaye"
+      ],
+      "url_hint": "YouTube 官方頻道 feed；僅用於監聽新影片，不直接進入論點分析。",
+      "description": "從 Gooaye 股癌 YouTube 官方 feed 監聽最新影片。標題與描述只做通知索引；多空與族群判讀必須等逐字稿或人工整理文字進入 analysis_inputs。"
     },
     {
       "name": "podcast_rss",
