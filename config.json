@@ -1,5 +1,7 @@
 {
   "input_dir": "project_data/raw",
+  "analysis_input_dir": "project_data/analysis_inputs",
+  "episode_monitor_dir": "project_data/episode_monitor",
   "clean_dir": "project_data/cleaned",
   "notes_dir": "project_data/notes",
   "output_dir": "output",

@@ -107,3 +107,11 @@ projects/topic_22_stockguy_analysis
 - 自動產出位置：`project_data/benchmarks/`
 - 自動設計設定：`project_data/benchmark_design.json`
 - 若要補外部 benchmark，可把 CSV 放在 `project_data/benchmark_sources/`，再執行 `python scripts/prepare_benchmarks.py`
+
+## Codex 共創分析流程
+
+- RSS 只用來監聽新集數，不直接進研究結論。
+- 監聽結果放在 `project_data/episode_monitor/`。
+- 真正要分析的逐字稿、重點筆記或人工摘錄，放在 `project_data/analysis_inputs/`。
+- 每次執行 `daily_update.bat` 時，系統只會分析 `analysis_inputs` 內的內容。
+- 這樣可以避免把節目摘要、贊助文案或平台 metadata 誤當成股癌觀點。

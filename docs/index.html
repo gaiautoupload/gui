@@ -16,21 +16,11 @@
         <p class="lead">每日自動抓取、整理與歸納公開言論，按日期切換報告，保留來源可追溯。</p>
       </div>
       <div class="hero-metrics">
-        <div class="metric">
-          <span class="metric-label">最後更新</span>
-          <strong id="generatedAt">-</strong>
-        </div>
-        <div class="metric">
-          <span class="metric-label">論點數</span>
-          <strong id="argumentCount">-</strong>
-        </div>
-        <div class="metric">
-          <span class="metric-label">主題數</span>
-          <strong id="themeCount">-</strong>
-        </div>
+        <div class="metric"><span class="metric-label">最後更新</span><strong id="generatedAt">-</strong></div>
+        <div class="metric"><span class="metric-label">論點數</span><strong id="argumentCount">-</strong></div>
+        <div class="metric"><span class="metric-label">主題數</span><strong id="themeCount">-</strong></div>
       </div>
     </header>
-
     <main class="layout">
       <section class="panel controls">
         <div class="control-row">
@@ -42,15 +32,14 @@
           <input id="searchBox" type="search" placeholder="輸入關鍵字，例如 AI、風控、半導體" />
         </div>
       </section>
-
       <section class="panel summary">
         <div class="section-head">
           <h2>日期報告</h2>
           <span id="reportMeta" class="meta-pill"></span>
         </div>
         <article id="dailySummary" class="summary-card"></article>
+        <p class="muted" style="margin-top:12px;">週分析與一年準確度報告會同步輸出到 `output/weekly_report.md`。</p>
       </section>
-
       <section class="panel">
         <div class="section-head">
           <h2>論點卡片</h2>

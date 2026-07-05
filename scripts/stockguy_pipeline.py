@@ -178,8 +178,34 @@ def load_raw_mentions(input_dir: Path) -> list[dict]:
                 if not line:
                     continue
                 obj = json.loads(line)
+                if not obj.get("analysis_ready"):
+                    continue
                 obj["_raw_file"] = str(path.name)
                 items.append(obj)
+    return items
+
+
+def load_analysis_inputs(input_dir: Path) -> list[dict]:
+    items = []
+    for path in sorted([*input_dir.glob("*.md"), *input_dir.glob("*.txt")]):
+        text = path.read_text(encoding="utf-8").strip()
+        if not text:
+            continue
+        title = path.stem
+        date_match = re.search(r"(\d{4}-\d{2}-\d{2})", path.name)
+        published_at = date_match.group(1) if date_match else datetime.now().strftime("%Y-%m-%d")
+        items.append(
+            {
+                "analysis_ready": True,
+                "source_id": f"manual-{hashlib.sha1(str(path).encode('utf-8')).hexdigest()[:10]}",
+                "source_type": "codex_review",
+                "source_url": "",
+                "published_at": published_at,
+                "author": "股癌",
+                "title": title,
+                "content": text,
+            }
+        )
     return items
 
 
@@ -239,34 +265,35 @@ def parse_rss_date(value: str) -> str:
         return value
 
 
-def collect_from_rss(source: dict) -> list[RawMention]:
+def parse_rss_items(source: dict) -> list[dict]:
     rss_url = source.get("rss_url") or source.get("url")
     if not rss_url:
         return []
     xml_text = fetch_url(rss_url)
     root = ET.fromstring(xml_text)
     source_name = str(source.get("name", "rss"))
-    author = str(source.get("author", "股癌"))
     max_items = int(source.get("max_items", 80))
-    items: list[RawMention] = []
+    items = []
     for idx, item in enumerate(root.findall(".//channel/item")[:max_items], start=1):
         title = child_text(item, "title")
         description = child_text(item, "description")
         link = child_text(item, "link") or rss_url
         pub_date = parse_rss_date(child_text(item, "pubDate"))
         guid = child_text(item, "guid") or f"{source_name}-{idx:03d}"
-        content = normalize_text(" ".join(part for part in [title, description] if part))
-        items.append(
-            RawMention(
-                source_id=f"{source_name}-{hashlib.sha1(guid.encode('utf-8')).hexdigest()[:10]}",
-                source_type="podcast",
-                source_url=link,
-                published_at=pub_date,
-                author=author,
-                title=title,
-                content=content,
-            )
-        )
+        episode_id = f"{source_name}-{hashlib.sha1(guid.encode('utf-8')).hexdigest()[:10]}"
+        items.append({"episode_id": episode_id, "published_at": pub_date, "title": title, "url": link, "summary_preview": description[:180]})
+    return items
+
+
+def monitor_rss_source(source: dict, monitor_dir: Path) -> list[dict]:
+    monitor_dir.mkdir(parents=True, exist_ok=True)
+    items = parse_rss_items(source)
+    out_path = monitor_dir / f"{source.get('name', 'rss')}_episodes.csv"
+    with out_path.open("w", encoding="utf-8-sig", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["episode_id", "published_at", "title", "url", "summary_preview"])
+        writer.writeheader()
+        writer.writerows(items)
+    save_json(monitor_dir / f"{source.get('name', 'rss')}_episodes.json", items)
     return items
 
 
@@ -462,8 +489,6 @@ def design_dynamic_benchmarks(
 
 
 def collect_from_source(source: dict) -> list[RawMention]:
-    if source.get("capture_mode") == "rss" or source.get("type") == "podcast" and source.get("rss_url"):
-        return collect_from_rss(source)
     urls = source.get("urls", []) or ([source["url"]] if source.get("url") else [])
     if not urls:
         urls = discover_urls(source)
@@ -734,6 +759,8 @@ def write_site_files(site_data: dict, docs_dir: Path) -> None:
     report_dir = data_dir / "reports"
     ensure_dir(daily_dir)
     ensure_dir(report_dir)
+    for old_report in report_dir.glob("*.json"):
+        old_report.unlink()
 
     report_date = site_data.get("report_date", datetime.now().strftime("%Y-%m-%d"))
     save_json(daily_dir / f"{report_date}.json", site_data)
@@ -969,7 +996,7 @@ loadData();
     (docs_dir / "assets" / "site.js").write_text(site_js.strip() + "\n", encoding="utf-8")
 
 
-def build_site_payload(mentions: list[Mention]) -> dict:
+def _legacy_build_site_payload(mentions: list[Mention]) -> dict:
     theme_counter = Counter(m.topic_tag for m in mentions)
     arg_groups = defaultdict(list)
     for m in mentions:
@@ -1003,7 +1030,7 @@ def build_site_payload(mentions: list[Mention]) -> dict:
     }
 
 
-def write_site_files(site_data: dict, docs_dir: Path) -> None:
+def _legacy_write_site_files(site_data: dict, docs_dir: Path) -> None:
     data_dir = docs_dir / "data"
     report_dir = data_dir / "reports"
     ensure_dir(report_dir)
@@ -1244,6 +1271,8 @@ def main() -> int:
     sources = load_json(ROOT / config.get("sources_file", "project_data/sources.json"), {}).get("sources", [])
 
     input_dir = ROOT / config.get("input_dir", "project_data/raw")
+    analysis_input_dir = ROOT / config.get("analysis_input_dir", "project_data/analysis_inputs")
+    episode_monitor_dir = ROOT / config.get("episode_monitor_dir", "project_data/episode_monitor")
     clean_dir = ROOT / config.get("clean_dir", "project_data/cleaned")
     output_dir = ROOT / config.get("output_dir", "output")
     reports_dir = ROOT / config.get("reports_dir", "output/reports")
@@ -1257,11 +1286,14 @@ def main() -> int:
     for source in sources:
         if not source.get("enabled", False):
             continue
+        if source.get("capture_mode") == "rss" or source.get("type") == "podcast" and source.get("rss_url"):
+            monitor_rss_source(source, episode_monitor_dir)
+            continue
         collected = collect_from_source(source)
         if collected:
             save_raw_mentions(input_dir, collected, str(source.get("name", "source")))
 
-    raw = load_raw_mentions(input_dir)
+    raw = load_raw_mentions(input_dir) + load_analysis_inputs(analysis_input_dir)
     mentions = [coerce_mention(obj, theme_map) for obj in raw]
     mentions = dedupe_mentions(mentions)
 
