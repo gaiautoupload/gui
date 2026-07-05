@@ -1,7 +1,12 @@
 __pycache__/
 *.pyc
 .DS_Store
+.venv/
 
 project_data/raw/*.jsonl
 project_data/benchmark_sources/*.csv
 project_data/episode_monitor/latest_feed.xml
+project_data/transcripts/*.json
+project_data/transcripts/*.txt
+!project_data/transcripts/latest_status.json
+project_data/analysis_inputs/*_youtube_transcript.md
